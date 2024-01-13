@@ -8,12 +8,18 @@ headers = {
     'Content-Type': 'application/json'
 }
 
+# Conversation history
+conversation_history = []
+
 def generate_response(prompt):
+
+    conversation_history.append(prompt)
+    full_prompt = "\n".join(conversation_history)
     
     data = {
         "model" : "mistral",
         "stream" : False,
-        "prompt" : prompt
+        "prompt" : full_prompt
     }
     
     response = requests.post(url,headers=headers,data=json.dumps(data))
@@ -21,7 +27,9 @@ def generate_response(prompt):
     if response.status_code == 200 :
         response_text = response.text
         data = json.loads(response_text)
-        return data["response"]
+        result = data["response"]
+        conversation_history.append(result)
+        return result
     else:
         print("Error :", response.status_code, response.text)
         return None
