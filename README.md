@@ -1,2 +1,2 @@
-# ai_Ollama
+# AI_Ollama
 Review Ollama features
